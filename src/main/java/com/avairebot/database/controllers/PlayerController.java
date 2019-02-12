@@ -74,8 +74,8 @@ public class PlayerController {
                     avaire.getDatabase()
                         .newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                         .select(requiredPlayerColumns)
-                        .where("user_id", user.getId())
-                        .andWhere("guild_id", message.getGuild().getId())
+                        .where("experiences.user_id", user.getId())
+                        .andWhere("experiences.guild_id", message.getGuild().getId())
                         .get().first()
                 );
 
@@ -145,6 +145,19 @@ public class PlayerController {
 
     private static String asKey(@Nonnull Guild guild, @Nonnull User user) {
         return guild.getId() + ":" + user.getId();
+    }
+
+    public static void forgetCache(long userId) {
+        List<String> toRemove = new ArrayList<>();
+        for (String key : cache.asMap().keySet()) {
+            if (key.endsWith(":" + userId)) {
+                toRemove.add(key);
+            }
+        }
+
+        if (!toRemove.isEmpty()) {
+            cache.invalidateAll(toRemove);
+        }
     }
 
     public static class PlayerUpdateReference {

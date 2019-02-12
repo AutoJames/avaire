@@ -47,6 +47,15 @@ administration:
         noSlotsLeft: "The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots."
         success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
 
+    AdministrateExperienceCommand:
+        cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
+        invalidAmountGiven: "The `amount` property must between 1 and {0} add or take XP from a user."
+        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://discord.gg/gt2FWER)."
+        success:
+            add: "**:amount** XP have been given to :target, they now have **:newAmount** XP."
+            take: "**:amount** XP have been taken from :target, they now have **:newAmount** XP."
+            reset: ":target has successfully had their XP reset."
+
     AiCommand:
         message: "The `Artificial Intelligence` module has been **:status** for the :channel channel."
         status:
@@ -387,6 +396,11 @@ fun:
         invalidValueGiven: "Valeur fournie invalide `{0}`, `{1}` doit être un nombre!"
         rolledNumber: ":user a obtenu **:number** parmis :min - :max"
 
+    SayCommand:
+        userMissingPermissions: "You can't use the this command for the {0} channel, you must have the message write and message manage permissions for the channel to use the command for the channel."
+        botMissingPermissions: "The say command can't be used for the {0} channel, I need both the message write and message manage permissions for the channel to successfully run the command."
+        success: "Your message have been sent to the :name channel."
+
     UndertaleTextBoxCommand:
         noArgumentsGiven: "Missing argument, you must either provide `list` to see a list of characters you can choose from, or to generate an image, `character` or a valid image `url` to build the image for."
         failedToGenerateImage: "Failed to generate the the image, are you sure you provided a correct image URL or character name?"
@@ -551,10 +565,18 @@ music:
         successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
-        error: "Il n'y a rien à répéter, demande un musique d'abord avec `{0}play`"
-        success: "La lecture en boucle de la file d'attente musicale est maintenant sur le status `:status`."
-        enabled: "ON"
-        disabled: "OFF"
+        error: 'There is nothing to repeat, request music first with `{0}play`'
+        title: 'Current repeat mode: {0}'
+        message: "The music player repeat status have been successfully changed to **:state**, this means:\n\n:note"
+        footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
+        states:
+            single: 'One'
+            all: 'All'
+            loopoff: 'Off'
+        notes:
+            single: 'The music player will repeat the song that is currently playing without going to the next song in the queue.\n**Note:** This also mutes "Now Playing" messages so the chat is not spammed with the same song over and over again.'
+            all: 'The music player will repeat every song in the queue, after a song finishes playing it will be re-added to the end of the queue automatically.'
+            loopoff: 'The music player will not loop, when a song finishes playing it will get removed from the queue and the next track will begin playing.'
 
     ResumeCommand:
         error: "Rien à reprendre, demande une musique d'abord avec `{0}play`"
@@ -713,6 +735,25 @@ utility:
             1600: "#BlameDiscord. :angry:"
             10000: "cela n'a aucun sens :thinking: #BlameAlexis"
             other: "lent. :dizzy_face:"
+
+    RankBackgroundCommand:
+        canBeUnlocked: "Rank backgrounds can be unlocked using **[Vote Points](https://discordbots.org/bot/avaire)**,\nyou'll get **1 point** each time you vote for the bot."
+        listTitle: "Rank Backgrounds ({0})"
+        youHaveVotePoints: "You have {0} vote points."
+        exampleTitle: "{0} Example"
+        exampleFooter: "{0} costs {1} vote points"
+        alreadyOwnsBackground: "You already own the **:name** background!"
+        doesntHaveEnoughPoints: "You don't have enough vote points to buy this background, the background costs `{0}`, and you have `{1}` vote points."
+        boughtBackgroundSuccessfully: "Congratulation! You now own the **:name** background!\nYou can use the `:command` command to use the background."
+        youDontOwnThisBackground: "You don't own the **:name** background, however you can buy it for **:cost** Vote Points!"
+        successfullyChangedBackground: "You have successfully changed to use the **:name** background."
+        disabledBackgrounds: "Rank backgrounds have successfully been disabled, you are now using embedded messages for rank commands again."
+        buyNotes:
+            alreadyOwns: "**{0}**\n- _You already own this background._"
+            doesntOwns: "**{0}**\n - Costs {1} vote points."
+        failedToSendExampleMessage: "Something went wrong while trying to send the example image for the {0} background, error: {1}."
+        failedToBuyTheBackground: "Something went wrong while buying the background, error: {0}"
+        failedToSetBackground: "Failed to set the background due to a database error, try again later, if this error continues to appear, please contact one of my developers."
 
     RankCommand:
         botsCannotReceiveXp: "Les Bots ne peuvent pas recevoir d'xp et donc être classé, essaye plutôt d'identifier un utilisateur."
