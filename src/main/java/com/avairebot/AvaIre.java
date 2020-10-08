@@ -96,6 +96,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.RestAction;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.SessionControllerAdapter;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
@@ -685,22 +686,25 @@ public class AvaIre {
     }
 
     private ShardManager buildShardManager() throws LoginException {
-        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.create(
-            getConfig().getString("discord.token"),
-            EnumSet.allOf(GatewayIntent.class)
-        )
+        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.create(EnumSet.of(
+            GatewayIntent.GUILD_MEMBERS,
+            GatewayIntent.GUILD_BANS,
+            GatewayIntent.GUILD_EMOJIS,
+            GatewayIntent.GUILD_INVITES,
+            GatewayIntent.GUILD_MESSAGES,
+            GatewayIntent.GUILD_MESSAGE_REACTIONS,
+            GatewayIntent.DIRECT_MESSAGES
+        ))
+            .setToken(getConfig().getString("discord.token"))
             .setSessionController(new SessionControllerAdapter())
             .setActivity(Activity.watching("my code start up..."))
             .setBulkDeleteSplittingEnabled(false)
             .setMemberCachePolicy(MemberCachePolicy.ALL)
-            .setEnableShutdownHook(false)
-            .disableCache(CacheFlag.ACTIVITY)
+            .setChunkingFilter(ChunkingFilter.NONE)
+            .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.CLIENT_STATUS)
+            .setEnableShutdownHook(true)
             .setAutoReconnect(true)
             .setContextEnabled(true)
-            .setDisabledIntents(
-                GatewayIntent.DIRECT_MESSAGE_TYPING,
-                GatewayIntent.GUILD_MESSAGE_TYPING
-            )
             .setShardsTotal(settings.getShardCount());
 
         if (settings.getShards() != null) {
